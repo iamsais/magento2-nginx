@@ -68,6 +68,13 @@ server {
  
 		try_files $uri $uri/ /index.php?$args;
 	}
+
+	location ~*  \.(ico|jpg|jpeg|png|gif|svg|js|css|swf|eot|ttf|otf|woff|woff2)$ {
+                add_header Cache-Control "public";
+                add_header X-Frame-Options "SAMEORIGIN";
+                expires 365d;
+                try_files $uri $uri/ /get.php?$args;
+        }
  
 	location /pub/ {
  

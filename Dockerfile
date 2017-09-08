@@ -28,11 +28,18 @@ RUN apt-get update && \
         php7.0-bcmath \
         supervisor
 
+RUN git clone https://github.com/edenhill/librdkafka.git && \
+	cd librdkafka && \
+	./configure && make && make install && \
+	ls -l /usr/local/lib/ && \
+	pecl install rdkafka
+
 # clear apt cache and remove unnecessary packages
 RUN apt-get autoclean && apt-get -y autoremove
 
 COPY php-fpm/php.ini /etc/php/7.0/fpm/
 COPY php-cli/php.ini /etc/php/7.0/cli/
+COPY rdkafka.ini /etc/php/7.0/mods-available/
 
 RUN rm /etc/nginx/sites-enabled/default
 
